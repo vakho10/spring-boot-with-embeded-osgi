@@ -1,1 +1,1 @@
-"# spring-boot-with-embeded-osgi" 
+# spring-boot-with-embeded-osgi
