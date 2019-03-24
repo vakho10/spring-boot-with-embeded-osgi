@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1553441360251
+Build-Jdk: 1.8.0_92
+Built-By: vakho
+Bundle-Activator: ge.vakho.hello_service_geo.Activator
+Bundle-ManifestVersion: 2
+Bundle-Name: hello-service-geo
+Bundle-SymbolicName: ge.vakho.hello-service-geo
+Bundle-Version: 0.0.1.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin
+Export-Package: ge.vakho.hello_service_geo;uses:="org.osgi.framework";ve
+ rsion="0.0.1.SNAPSHOT"
+Import-Package: org.osgi.framework;version="[1.8,2)",ge.vakho.hello_serv
+ ice_api;version="[0.0,1)",ge.vakho.hello_service_api.model;version="[0.
+ 0,1)"
+Private-Package: ge.vakho.hello_service_geo.impl
+Tool: Bnd-4.1.0.201810181252
