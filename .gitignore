@@ -1,6 +1,8 @@
 .classpath
 .project
 .settings
+target
+felix-cache
 
 # Compiled class file
 *.class
