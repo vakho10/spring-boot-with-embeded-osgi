@@ -1,5 +1,8 @@
 package ge.vakho.spring_boot_with_embeded_osgi.config;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ServiceLoader;
@@ -7,6 +10,7 @@ import java.util.ServiceLoader;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.Constants;
@@ -17,6 +21,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Configuration
 public class OSGIConfig {
 
@@ -25,13 +33,31 @@ public class OSGIConfig {
 	private Framework framework;
 
 	@PostConstruct
-	public void start() throws BundleException {
+	public void start() throws BundleException, JsonParseException, JsonMappingException, IOException {
 		LOGGER.info("Starting OSGI framework...");
 		FrameworkFactory frameworkFactory = ServiceLoader.load(FrameworkFactory.class) //
 				.iterator().next();
 		framework = frameworkFactory.newFramework(getConfig());
 		framework.start();
 		LOGGER.info("OSGI framework has started");
+		
+		installBundles();
+	}
+
+	private void installBundles() throws JsonParseException, JsonMappingException, IOException, BundleException {
+		LOGGER.info("Installing bundles...");
+		ObjectMapper mapper = new ObjectMapper();
+		Path bundlesFolder = Paths.get("bundles/");
+		String[] bundles = mapper.readValue(bundlesFolder.resolve("config.json").toFile(), String[].class);
+		for (String bundle : bundles) {
+			String path = bundlesFolder.resolve(bundle).toAbsolutePath().toString();
+			LOGGER.info("Installing bundle {}", path);
+			Bundle installedBundle = framework.getBundleContext().installBundle("file:" + path);
+			LOGGER.info("Installed bundle {}", installedBundle.getSymbolicName());
+			installedBundle.start();
+			LOGGER.info("Started bundle {}", installedBundle.getSymbolicName());
+		}
+		LOGGER.info("All {} bundles installed successfully", bundles.length);
 	}
 
 	@PreDestroy
