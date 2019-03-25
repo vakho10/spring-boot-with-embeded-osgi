@@ -1,0 +1,76 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+
+	<id>bin</id>
+	<formats>
+		<format>dir</format>
+	</formats>
+
+	<includeBaseDirectory>false</includeBaseDirectory>
+
+	<!-- Copy config.json file -->
+	<fileSets>
+		<fileSet>
+			<directory>src/main/resources</directory>
+			<includes>
+				<include>config.json</include>
+			</includes>
+			<outputDirectory>bundles</outputDirectory>
+		</fileSet>
+	</fileSets>
+
+	<moduleSets>
+
+		<!-- Bundle JARs -->
+		<moduleSet>
+			<!-- Enable access to all projects in the current multimodule build! -->
+			<useAllReactorProjects>true</useAllReactorProjects>
+
+			<!-- Now, select which projects to include in this module-set. -->
+			<includes>
+				<include>ge.vakho:logger-service</include>
+				<include>ge.vakho:hello-service-geo</include>
+				<include>ge.vakho:hello-service-rus</include>
+			</includes>
+			<binaries>
+				<dependencySets>
+					<dependencySet>
+						<includes>
+							<!-- OSGI Compendium -->
+							<include>org.osgi:org.osgi.compendium</include>
+							
+							<!-- Gson -->
+							<include>com.google.code.gson:gson</include>
+
+							<!-- Jackson(s) -->
+							<include>com.fasterxml.jackson.core:jackson-core</include>
+							<include>com.fasterxml.jackson.core:jackson-annotations</include>
+							<include>com.fasterxml.jackson.core:jackson-databind</include>
+
+							<!-- Commons logging -->
+							<include>commons-logging:commons-logging</include>
+
+							<!-- PDFBox -->
+							<include>org.apache.pdfbox:fontbox</include>
+							<include>org.apache.pdfbox:pdfbox</include>
+
+							<!-- BC -->
+							<include>org.bouncycastle:bcpkix-jdk15on</include>
+							<include>org.bouncycastle:bcprov-jdk15on</include>
+
+							<!-- Country Codes -->
+							<include>com.neovisionaries:nv-i18n</include>
+
+						</includes>
+						<outputDirectory>bundles</outputDirectory>
+					</dependencySet>
+				</dependencySets>
+				<includeDependencies>false</includeDependencies>
+				<unpack>false</unpack>
+				<outputDirectory>bundles</outputDirectory>
+			</binaries>
+
+		</moduleSet>
+	</moduleSets>
+</assembly>

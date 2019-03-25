@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>ge.vakho</groupId>
-		<artifactId>spring-boot-with-embeded-osgi</artifactId>
+		<artifactId>bundles</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>logger-service</artifactId>

@@ -6,33 +6,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>ge.vakho</groupId>
-		<artifactId>spring-boot-with-embeded-osgi</artifactId>
+		<artifactId>bundles</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>hello-service-geo</artifactId>
+	<artifactId>hello-service-api</artifactId>
 	<packaging>bundle</packaging>
 
 	<dependencies>
-		<dependency>
-			<groupId>ge.vakho</groupId>
-			<artifactId>hello-service-api</artifactId>
-			<version>${project.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.osgi/org.osgi.core -->
-		<dependency>
-			<groupId>org.osgi</groupId>
-			<artifactId>org.osgi.core</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
 		<!-- JUnit 5 -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -50,12 +30,7 @@
 				<artifactId>maven-bundle-plugin</artifactId>
 				<configuration>
 					<instructions>
-						<Bundle-Activator>ge.vakho.hello_service_geo.Activator</Bundle-Activator>
-						<Import-Package>
-							org.osgi.framework,
-							org.slf4j; version=1.7.25,
-							ge.vakho.hello_service_api.*
-						</Import-Package>
+						<!-- <Export-Package>ge.vakho.hello_service_api.*</Export-Package> -->
 					</instructions>
 				</configuration>
 			</plugin>
