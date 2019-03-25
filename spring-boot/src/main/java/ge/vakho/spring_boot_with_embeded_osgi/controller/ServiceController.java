@@ -38,7 +38,7 @@ public class ServiceController {
 	@PostMapping
 	public String call(@RequestBody @Valid ServiceRequestModel serviceRequestModel) throws InvalidSyntaxException {
 		LOGGER.info("Calling any service with person {}", serviceRequestModel);
-		return getServices().findAny().get().sayHelloTo(from(serviceRequestModel));
+		return getServices().map(i -> i.sayHelloTo(from(serviceRequestModel))).reduce("", String::concat);
 	}
 
 	private Stream<HelloService> getServices() throws InvalidSyntaxException {
