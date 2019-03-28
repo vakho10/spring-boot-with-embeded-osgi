@@ -1,4 +1,4 @@
-package ge.vakho.spring_boot_with_embeded_osgi.controller.model;
+package ge.vakho.spring_boot.controller.model;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;

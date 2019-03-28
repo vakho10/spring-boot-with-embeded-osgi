@@ -1,4 +1,6 @@
-package ge.vakho.spring_boot_with_embeded_osgi.controller.model;
+package ge.vakho.spring_boot.controller.model;
+
+import org.osgi.framework.Bundle;
 
 public class BundleModel {
 
@@ -38,6 +40,10 @@ public class BundleModel {
 
 	public void setState(int state) {
 		this.state = state;
+	}
+	
+	public static BundleModel from(Bundle bundle) {
+		return new BundleModel(bundle.getBundleId(), bundle.getSymbolicName(), bundle.getState());
 	}
 
 }

@@ -1,13 +1,76 @@
 <!DOCTYPE HTML>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
+<!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Spring Boot with OSGI Embeded</title>
-</head>
 
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<title>Hello, world!</title>
+</head>
 <body>
-	<h1>Hello, world!</h1>
+	<div class="container">
+		<h1 class="mt-3">Bundle Dashboard</h1>
+		<hr />
+		
+		<div class="row">
+			<div class="col-sm-5">
+				<form action="#" th:action="@{/}" method="post"
+					enctype="multipart/form-data">
+					<div class="input-group mb-3">
+						<div class="custom-file">
+							<input type="file" class="custom-file-input" id="file" name="file" />
+							<label class="custom-file-label" for="file">Choose file</label>
+						</div>
+						<div class="input-group-append">
+							<input class="btn btn-outline-secondary" type="submit"
+								value="Upload" />
+						</div>
+					</div>
+					<div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+					  	<span th:text="${errorMessage}"></span>
+					  	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					    	<span aria-hidden="true">&times;</span>
+					  	</button>
+					</div>		
+					<div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+					  	<span th:text="${successMessage}"></span>
+					  	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					    	<span aria-hidden="true">&times;</span>
+					  	</button>
+					</div>					
+				</form>
+			</div>
+			<div class="col-sm-7">
+				<table class="table table-sm table-bordered">
+					<thead>
+						<th>ID</th>
+						<th>Name</th>
+						<th>State</th>
+					</thead>
+					<tbody>
+						<tr th:each="bundle : ${bundles}">
+							<td th:text="${bundle.id}"></td>
+							<td th:text="${bundle.name}"></td>
+							<td th:text="${bundle.state}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+	</div>
+
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

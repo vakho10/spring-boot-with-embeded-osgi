@@ -1,4 +1,4 @@
-package ge.vakho.spring_boot_with_embeded_osgi;
+package ge.vakho.spring_boot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,9 +10,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  */
 @SpringBootApplication
-public class SpringBootWithEmbededOsgiApplication {
+public class Application {
 
 	public static void main(String[] args) throws Exception {
-		SpringApplication.run(SpringBootWithEmbededOsgiApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 }

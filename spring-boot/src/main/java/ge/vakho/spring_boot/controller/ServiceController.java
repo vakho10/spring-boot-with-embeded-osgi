@@ -1,4 +1,4 @@
-package ge.vakho.spring_boot_with_embeded_osgi.controller;
+package ge.vakho.spring_boot.controller;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ge.vakho.hello_service_api.HelloService;
 import ge.vakho.hello_service_api.model.Person;
-import ge.vakho.spring_boot_with_embeded_osgi.controller.model.ServiceRequestModel;
+import ge.vakho.spring_boot.controller.model.ServiceRequestModel;
 
 @RestController
 @RequestMapping("/service")
