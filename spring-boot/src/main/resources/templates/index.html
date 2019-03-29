@@ -51,12 +51,18 @@
 						<th>ID</th>
 						<th>Name</th>
 						<th>State</th>
+						<th></th>
+						<th></th>
+						<th></th>
 					</thead>
 					<tbody>
 						<tr th:each="bundle : ${bundles}">
 							<td th:text="${bundle.id}"></td>
 							<td th:text="${bundle.name}"></td>
 							<td th:text="${bundle.state}"></td>
+							<td><a th:href="@{/start(id=${bundle.id})}">Start</a></td>
+							<td><a th:href="@{/stop(id=${bundle.id})}">Stop</a></td>
+							<td><a th:href="@{/uninstall(id=${bundle.id})}">Uninstall</a></td>
 						</tr>
 					</tbody>
 				</table>

@@ -1,19 +1,14 @@
-package ge.vakho.spring_boot.config;
+package ge.vakho.spring_boot.configuration;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ServiceLoader;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import org.apache.felix.framework.Felix;
-import org.apache.felix.framework.FrameworkFactory;
 import org.apache.felix.framework.util.FelixConstants;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.Constants;
@@ -27,71 +22,63 @@ import org.springframework.context.annotation.Configuration;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ge.vakho.spring_boot.logger.FelixLogger;
 import ge.vakho.spring_boot.property.OsgiProperties;
 
+/**
+ * Loads Felix OSGI framework.
+ * 
+ * @author v.laluashvili
+ */
 @Configuration
 @EnableConfigurationProperties(OsgiProperties.class)
-public class OSGIConfig {
+public class OsgiConfig {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(OSGIConfig.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(OsgiConfig.class);
 
 	private Framework framework;
+
 	private final OsgiProperties osgiProperties;
 
 	@Autowired
-	public OSGIConfig(OsgiProperties osgiProperties) {
+	public OsgiConfig(OsgiProperties osgiProperties) {
 		this.osgiProperties = osgiProperties;
+	}
+
+	@Bean
+	public Framework framework() {
+		return framework;
+	}
+
+	@Bean
+	public BundleContext bundleContext() {
+		return framework.getBundleContext();
 	}
 
 	@PostConstruct
 	public void start() throws BundleException, JsonParseException, JsonMappingException, IOException {
-		LOGGER.info("Starting OSGI framework...");
+		LOGGER.info("Starting Felix framework...");
 		framework = new Felix(getConfig());
 		framework.start();
-		LOGGER.info("OSGI framework has started");
-
-		installBundles();
-	}
-
-	private void installBundles() throws JsonParseException, JsonMappingException, IOException, BundleException {
-		LOGGER.info("Installing bundles...");
-		ObjectMapper mapper = new ObjectMapper();
-		Path bundlesFolder = Paths.get("bundles/");
-		String[] bundles = mapper.readValue(bundlesFolder.resolve("config.json").toFile(), String[].class);
-		for (String bundle : bundles) {
-			String path = bundlesFolder.resolve(bundle).toAbsolutePath().toString();
-			LOGGER.info("Installing bundle {}", path);
-			Bundle installedBundle = framework.getBundleContext().installBundle("file:" + path);
-			LOGGER.info("Installed bundle {}", installedBundle.getSymbolicName());
-			installedBundle.start();
-			LOGGER.info("Started bundle {}", installedBundle.getSymbolicName());
-		}
-		LOGGER.info("All {} bundles installed successfully", bundles.length);
+		LOGGER.info("Felix framwork has started");
 	}
 
 	@PreDestroy
 	public void stop() throws BundleException, InterruptedException {
-		LOGGER.info("Stopping OSGI framework...");
+		LOGGER.info("Stopping Felix framework...");
 		framework.stop();
 		framework.waitForStop(0);
-		LOGGER.info("OSGI framework has been stopped");
+		LOGGER.info("Felix framework has been stopped");
 	}
 
 	private Map<String, Object> getConfig() {
-
-		// Create configuration with Felix logger set
 		final Map<String, Object> config = new HashMap<>();
-
-		// Add logger and its configurations
-		addLoggerConfigurations(config);
 
 		// Clean cache on first init
 		config.put(Constants.FRAMEWORK_STORAGE_CLEAN, Constants.FRAMEWORK_STORAGE_CLEAN_ONFIRSTINIT);
 
-		// Add extra exports for logging and service calls...
+		addLoggerConfigurations(config);
 		addExtraPackages(config);
 		return config;
 	}
@@ -113,11 +100,6 @@ public class OSGIConfig {
 		String extraPackages = String.join(",", osgiProperties.getExtraPackages());
 		config.put(Constants.FRAMEWORK_SYSTEMPACKAGES_EXTRA, extraPackages);
 		LOGGER.info("Added extra packages: {}", extraPackages);
-	}
-
-	@Bean
-	public BundleContext bundleContext() throws BundleException {
-		return framework.getBundleContext();
 	}
 
 }

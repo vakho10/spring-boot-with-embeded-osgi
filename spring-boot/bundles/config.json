@@ -1,16 +1,1 @@
-[
-	"org.osgi.compendium-5.0.0.jar",
-	"logger-service-0.0.1-SNAPSHOT.jar",
-	"gson-2.8.5.jar",
-	"jackson-core-2.7.5.jar",
-	"jackson-annotations-2.7.5.jar",
-	"jackson-databind-2.7.5.jar",
-	"commons-logging-1.2.jar",
-	"fontbox-2.0.8.jar",
-	"pdfbox-2.0.8.jar",
-	"bcprov-jdk15on-1.59.jar",
-	"bcpkix-jdk15on-1.59.jar",
-	"nv-i18n-1.22.jar",
-	"hello-service-geo-0.0.1-SNAPSHOT.jar",
-	"hello-service-rus-0.0.1-SNAPSHOT.jar"
-]
+["org.osgi.compendium-5.0.0.jar","hello-service-api-0.0.1-SNAPSHOT.jar","commons-logging-1.2.jar","pdfbox-2.0.8.jar","logger-service-0.0.1-SNAPSHOT.jar","gson-2.8.5.jar","fontbox-2.0.8.jar","jackson-core-2.7.5.jar","jackson-annotations-2.7.5.jar","jackson-databind-2.7.5.jar","bcpkix-jdk15on-1.59.jar","bcprov-jdk15on-1.59.jar","nv-i18n-1.22.jar"]
