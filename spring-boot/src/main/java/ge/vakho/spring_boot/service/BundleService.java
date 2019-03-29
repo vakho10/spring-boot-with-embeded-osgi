@@ -44,10 +44,12 @@ public class BundleService {
 	
 	public void start(long bundleId) throws BundleNotFoundException, BundleException {
 		getBundleById(bundleId).start();
+		bundleConfigFile.setForceStartTo(bundleId, true);
 	}
 
 	public void stop(long bundleId) throws BundleNotFoundException, BundleException {
 		getBundleById(bundleId).stop();
+		bundleConfigFile.setForceStartTo(bundleId, false);
 	}
 
 	private Bundle getBundleById(long bundleId) throws BundleNotFoundException {
@@ -85,7 +87,7 @@ public class BundleService {
 	public void uninstall(long bundleId) throws BundleNotFoundException {
 		
 		Bundle bundle = getBundleById(bundleId);
-		String fileName = bundleConfigFile.findBy(bundleId);
+		String fileName = bundleConfigFile.getFileNameBy(bundleId);
 		
 		LOGGER.info("Uninstalling bundle: {} ...", bundle.getSymbolicName());
 		
