@@ -6,7 +6,6 @@ import java.util.stream.Stream;
 
 import javax.validation.Valid;
 
-import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ge.vakho.hello_service_api.HelloService;
 import ge.vakho.hello_service_api.model.Person;
 import ge.vakho.spring_boot.controller.model.ServiceRequestModel;
+import ge.vakho.spring_boot.service.BundleService;
 
 @RestController
 @RequestMapping("/service")
@@ -28,7 +28,7 @@ public class ServiceController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceController.class);
 
 	@Autowired
-	private BundleContext bundleContext;
+	private BundleService bundleService;
 
 	@GetMapping
 	public List<String> services() throws InvalidSyntaxException {
@@ -42,9 +42,7 @@ public class ServiceController {
 	}
 
 	private Stream<HelloService> getServices() throws InvalidSyntaxException {
-		return bundleContext.getServiceReferences(HelloService.class, null) //
-				.parallelStream() //
-				.map(ref -> bundleContext.getService(ref));
+		return bundleService.getServicesByClass(HelloService.class);
 	}
 
 	private Person from(ServiceRequestModel serviceRequestModel) {
