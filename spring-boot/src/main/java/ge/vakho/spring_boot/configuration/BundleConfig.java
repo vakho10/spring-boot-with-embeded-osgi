@@ -2,9 +2,7 @@ package ge.vakho.spring_boot.configuration;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
@@ -67,7 +65,9 @@ public class BundleConfig {
 	}
 	
 	private List<Bundle> installConfigurationBundles(String[] bundles) {
-		Map<Long, String> installedMap = new HashMap<>();
+		List<String> installedFileNames = new ArrayList<>();
+		List<Long> installedBundleIds = new ArrayList<>();
+		
 		List<Bundle> installedBundles = new ArrayList<>();
 		List<String> failedBundles = new ArrayList<>();
 		LOGGER.info("Installing bundles...");
@@ -77,7 +77,8 @@ public class BundleConfig {
 			try {
 				Bundle installedBundle = bundleContext.installBundle("file:" + bundleAbsolutePath);
 				installedBundles.add(installedBundle);
-				installedMap.put(installedBundle.getBundleId(), bundle);
+				installedFileNames.add(bundle);
+				installedBundleIds.add(installedBundle.getBundleId());
 				LOGGER.debug("Installed bundle: {}", installedBundle.getSymbolicName());
 			} catch (BundleException e) {
 				failedBundles.add(bundleAbsolutePath);
@@ -92,7 +93,7 @@ public class BundleConfig {
 		}
 		
 		LOGGER.debug("Inserting installed bundles into config memory...");
-		bundleConfigFile.insert(installedMap);
+		bundleConfigFile.bashInsert(installedBundleIds, installedFileNames);
 		LOGGER.debug("Inserted installed bundles into config memory");
 		return installedBundles;
 	}
