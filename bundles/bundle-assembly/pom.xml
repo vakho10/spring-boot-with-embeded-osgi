@@ -66,11 +66,6 @@
 			<artifactId>bcprov-jdk15on</artifactId>
 		</dependency>
 
-		<!-- Country Codes -->
-		<dependency>
-			<groupId>com.neovisionaries</groupId>
-			<artifactId>nv-i18n</artifactId>
-		</dependency>
 	</dependencies>
 
 	<build>

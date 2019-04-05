@@ -30,6 +30,11 @@ public class ServiceController {
 	@Autowired
 	private BundleService bundleService;
 
+	@GetMapping("/countries")
+	public List<String> countries() throws InvalidSyntaxException {
+		return getServices().map(service -> service.getCountryCode().getName()).collect(Collectors.toList());
+	}
+	
 	@GetMapping
 	public List<String> services() throws InvalidSyntaxException {
 		return getServices().map(service -> service.toString()).collect(Collectors.toList());

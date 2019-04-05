@@ -19,10 +19,17 @@
 			<version>${project.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Country Codes -->
+		<dependency>
+			<groupId>com.neovisionaries</groupId>
+			<artifactId>nv-i18n</artifactId>
 			<scope>provided</scope>
 		</dependency>
 
@@ -54,7 +61,8 @@
 						<Import-Package>
 							org.osgi.framework,
 							org.slf4j; version=1.7.25,
-							ge.vakho.hello_service_api.*
+							ge.vakho.hello_service_api.*,
+							com.neovisionaries.i18n
 						</Import-Package>
 					</instructions>
 				</configuration>

@@ -59,9 +59,6 @@
 							<include>org.bouncycastle:bcpkix-jdk15on</include>
 							<include>org.bouncycastle:bcprov-jdk15on</include>
 
-							<!-- Country Codes -->
-							<include>com.neovisionaries:nv-i18n</include>
-
 						</includes>
 						<outputDirectory>bundles</outputDirectory>
 					</dependencySet>

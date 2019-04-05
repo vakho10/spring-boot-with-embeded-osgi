@@ -59,13 +59,17 @@ public class BundleService {
 	}
 
 	public void start(long bundleId) throws BundleNotFoundException, BundleException {
+		LOGGER.info("Starting bundle with id: {}", bundleId);
 		getBundleById(bundleId).start();
 		bundleConfigFile.setForceStartTo(bundleId, true);
+		LOGGER.info("Started bundle with id: {}", bundleId);
 	}
 
 	public void stop(long bundleId) throws BundleNotFoundException, BundleException {
+		LOGGER.info("Stopping bundle with id: {}", bundleId);
 		getBundleById(bundleId).stop();
 		bundleConfigFile.setForceStartTo(bundleId, false);
+		LOGGER.info("Stopped bundle with id: {}", bundleId);
 	}
 
 	private Bundle getBundleById(long bundleId) throws BundleNotFoundException {

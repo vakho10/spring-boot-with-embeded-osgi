@@ -20,6 +20,20 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- Gson -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Country Codes -->
+		<dependency>
+			<groupId>com.neovisionaries</groupId>
+			<artifactId>nv-i18n</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.osgi/org.osgi.core -->
 		<dependency>
 			<groupId>org.osgi</groupId>
@@ -47,7 +61,9 @@
 						<Bundle-Activator>ge.vakho.hello_service_rus.Activator</Bundle-Activator>
 						<Import-Package>
 							org.osgi.framework,
-							ge.vakho.hello_service_api.*
+							ge.vakho.hello_service_api.*,
+							com.neovisionaries.i18n,
+							com.google.gson
 						</Import-Package>
 					</instructions>
 				</configuration>

@@ -1,5 +1,7 @@
 package ge.vakho.hello_service_api;
 
+import com.neovisionaries.i18n.CountryCode;
+
 import ge.vakho.hello_service_api.model.Person;
 
 /**
@@ -18,5 +20,10 @@ public interface HelloService {
 	default String sayHelloTo(Person person) {
 		return "Hello, " + person.getFirstName() + " " + person.getLastName() + ". ";
 	}
+
+	/**
+	 * @return {@link CountryCode} object for service.
+	 */
+	CountryCode getCountryCode();
 
 }
