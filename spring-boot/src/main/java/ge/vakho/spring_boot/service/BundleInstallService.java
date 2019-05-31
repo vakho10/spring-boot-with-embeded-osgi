@@ -10,7 +10,6 @@ import org.osgi.framework.BundleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -18,7 +17,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import ge.vakho.spring_boot.aop.InsertBundleEntryFailMarker;
 import ge.vakho.spring_boot.aop.InstallBundleFailMarker;
-import ge.vakho.spring_boot.property.BundleProperties;
+import ge.vakho.spring_boot.configuration.model.BundleConfigurationFile;
 
 /**
  * Serves as API for bundle installation, start, stop and deletion.
@@ -26,24 +25,23 @@ import ge.vakho.spring_boot.property.BundleProperties;
  * @author v.laluashvili
  */
 @Service
-@EnableConfigurationProperties(BundleProperties.class)
 public class BundleInstallService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BundleInstallService.class);
 
 	private final BundleConfigFile bundleConfigFile;
 	private final BundleContext bundleContext;
-	private final BundleProperties bundleProperties;
-
+	private final BundleConfigurationFile bundleConfigurationFile;
+	
 	@Autowired
-	public BundleInstallService(BundleConfigFile bundleConfigFile, BundleContext bundleContext, BundleProperties bundleProperties) {
+	public BundleInstallService(BundleConfigFile bundleConfigFile, BundleContext bundleContext, BundleConfigurationFile bundleConfigurationFile) {
 		this.bundleConfigFile = bundleConfigFile;
 		this.bundleContext = bundleContext;
-		this.bundleProperties = bundleProperties;
+		this.bundleConfigurationFile = bundleConfigurationFile;
 	}
 
 	public Path createJarFileInBundlesFolder(String fileName, byte[] jarBytes) throws IOException {
-		Path newBundle = bundleProperties.getFolderPath().resolve(fileName);
+		Path newBundle = bundleConfigurationFile.getBundleFolder().toPath().resolve(fileName);
 		LOGGER.debug("Creating JAR file: {} in configuration folder...", newBundle.toAbsolutePath());
 		newBundle = Files.write(newBundle, jarBytes);
 		LOGGER.debug("Created JAR file: {} in configuration folder", newBundle.toAbsolutePath());

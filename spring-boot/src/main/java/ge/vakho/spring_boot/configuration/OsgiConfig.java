@@ -16,13 +16,16 @@ import org.osgi.framework.launch.Framework;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ge.vakho.spring_boot.configuration.model.BundleConfigurationFile;
 import ge.vakho.spring_boot.logger.FelixLogger;
 import ge.vakho.spring_boot.property.OsgiProperties;
 
@@ -32,7 +35,6 @@ import ge.vakho.spring_boot.property.OsgiProperties;
  * @author v.laluashvili
  */
 @Configuration
-@EnableConfigurationProperties(OsgiProperties.class)
 public class OsgiConfig {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(OsgiConfig.class);
@@ -44,6 +46,12 @@ public class OsgiConfig {
 	@Autowired
 	public OsgiConfig(OsgiProperties osgiProperties) {
 		this.osgiProperties = osgiProperties;
+	}
+	
+	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
+	public BundleConfigurationFile bundleConfigurationFile() throws JsonParseException, JsonMappingException, IOException {
+		return new ObjectMapper().readValue(osgiProperties.getBundleConfigFile(), BundleConfigurationFile.class);
 	}
 
 	@Bean

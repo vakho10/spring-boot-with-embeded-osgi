@@ -12,12 +12,9 @@ import org.osgi.framework.BundleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-import ge.vakho.spring_boot.property.BundleProperties;
-import ge.vakho.spring_boot.service.BundleConfigFile;
-import ge.vakho.spring_boot.service.BundleConfigFile.Entry;
+import ge.vakho.spring_boot.configuration.model.BundleConfigurationFile;
 
 /**
  * This class loads predefined bundles.
@@ -25,27 +22,23 @@ import ge.vakho.spring_boot.service.BundleConfigFile.Entry;
  * @author v.laluashvili
  */
 @Configuration
-@EnableConfigurationProperties(BundleProperties.class)
 public class BundleConfig {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BundleConfig.class);
 
-	private final BundleConfigFile bundleConfigFile;
-	private final BundleProperties bundleProperties;
 	private final BundleContext bundleContext;
+	private final BundleConfigurationFile bundleConfigurationFile;
 
 	@Autowired
-	public BundleConfig(BundleProperties bundleProperties, BundleContext bundleContext,
-			BundleConfigFile bundleConfigFile) {
-		this.bundleProperties = bundleProperties;
+	public BundleConfig(BundleContext bundleContext, BundleConfigurationFile bundleConfigurationFile) {
 		this.bundleContext = bundleContext;
-		this.bundleConfigFile = bundleConfigFile;
+		this.bundleConfigurationFile = bundleConfigurationFile;
 	}
 
 	@PostConstruct
 	public void init() throws IOException {
 		List<Bundle> installedBundles = new ArrayList<>();
-		List<Entry> installedEntries = new ArrayList<>();
+		List<BundleConfigurationFile.Entry> installedEntries = new ArrayList<>();
 		
 		// Install bundles
 		installConfigurationBundles(installedBundles, installedEntries);
@@ -54,12 +47,12 @@ public class BundleConfig {
 		startConfigurationBundles(installedBundles, installedEntries);
 	}
 
-	private List<Bundle> installConfigurationBundles(List<Bundle> installedBundles, List<Entry> installedEntries) {
+	private List<Bundle> installConfigurationBundles(List<Bundle> installedBundles, List<BundleConfigurationFile.Entry> installedEntries) {
 		List<String> failedBundles = new ArrayList<>();
 		LOGGER.info("Installing bundles...");
-		for (Entry entry : bundleConfigFile.getEntries()) {
+		for (BundleConfigurationFile.Entry entry : bundleConfigurationFile.getBundleEntries()) {
 			String bundleAbsolutePath //
-					= bundleProperties.getFolderPath().resolve(entry.getFileName()).toAbsolutePath().toString();
+					= bundleConfigurationFile.getBundleFolder().toPath().resolve(entry.getFileName()).toAbsolutePath().toString();
 			try {
 				Bundle installedBundle = bundleContext.installBundle("file:" + bundleAbsolutePath);
 				installedBundles.add(installedBundle);
@@ -82,7 +75,7 @@ public class BundleConfig {
 		return installedBundles;
 	}
 
-	private void startConfigurationBundles(List<Bundle> installedBundles, List<Entry> installedEntries) {
+	private void startConfigurationBundles(List<Bundle> installedBundles, List<BundleConfigurationFile.Entry> installedEntries) {
 		LOGGER.info("Starting {} bundles...", installedBundles.size());
 		List<Bundle> startedBundles = new ArrayList<>();
 		List<String> failedBundles = new ArrayList<>();

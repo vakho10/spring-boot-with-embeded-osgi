@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import ge.vakho.spring_boot.exception.BundleNotFoundException;
-import ge.vakho.spring_boot.property.BundleProperties;
 
 /**
  * Serves as API for bundle installation, start, stop and deletion.
@@ -33,9 +32,8 @@ public class BundleService {
 	private final BundleCleanupService bundleCleanupService;
 
 	@Autowired
-	public BundleService(BundleConfigFile bundleConfigFile, BundleContext bundleContext,
-			BundleProperties bundleProperties, BundleInstallService bundleInstallService,
-			BundleCleanupService bundleCleanupService) {
+	public BundleService(BundleConfigFile bundleConfigFile, BundleContext bundleContext, 
+			BundleInstallService bundleInstallService, BundleCleanupService bundleCleanupService) {
 		this.bundleConfigFile = bundleConfigFile;
 		this.bundleContext = bundleContext;
 		this.bundleInstallService = bundleInstallService;

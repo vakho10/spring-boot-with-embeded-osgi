@@ -9,10 +9,9 @@ import org.osgi.framework.BundleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 
-import ge.vakho.spring_boot.property.BundleProperties;
+import ge.vakho.spring_boot.configuration.model.BundleConfigurationFile;
 
 /**
  * Methods for cleanup operations.
@@ -20,22 +19,21 @@ import ge.vakho.spring_boot.property.BundleProperties;
  * @author v.laluashvili
  */
 @Service
-@EnableConfigurationProperties(BundleProperties.class)
 public class BundleCleanupService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BundleCleanupService.class);
 
-	private final BundleProperties bundleProperties;
+	private final BundleConfigurationFile bundleConfigurationFile;
 	private final BundleConfigFile bundleConfigFile;
 
 	@Autowired
-	public BundleCleanupService(BundleProperties bundleProperties, BundleConfigFile bundleConfigFile) {
-		this.bundleProperties = bundleProperties;
+	public BundleCleanupService(BundleConfigurationFile bundleConfigurationFile, BundleConfigFile bundleConfigFile) {
+		this.bundleConfigurationFile = bundleConfigurationFile;
 		this.bundleConfigFile = bundleConfigFile;
 	}
 
 	public void removeJar(String fileName) {
-		removeJar(bundleProperties.getFolderPath().resolve(fileName));
+		removeJar(bundleConfigurationFile.getBundleFolder().toPath().resolve(fileName));
 	}
 
 	public void removeJar(Path bundlePath) {
