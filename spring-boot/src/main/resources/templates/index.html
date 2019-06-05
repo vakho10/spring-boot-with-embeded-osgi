@@ -14,7 +14,7 @@
 </head>
 <body>
 	<div class="container">
-		<h1 class="mt-3">Bundle Dashboard</h1>
+		<h1 class="mt-3">entry Dashboard</h1>
 		<hr />
 		
 		<div class="row">
@@ -56,13 +56,14 @@
 						<th></th>
 					</thead>
 					<tbody>
-						<tr th:each="bundle : ${bundles}">
-							<td th:text="${bundle.id}"></td>
-							<td th:text="${bundle.name}"></td>
-							<td th:text="${bundle.state}"></td>
-							<td><a th:href="@{/start(id=${bundle.id})}">Start</a></td>
-							<td><a th:href="@{/stop(id=${bundle.id})}">Stop</a></td>
-							<td><a th:href="@{/uninstall(id=${bundle.id})}">Uninstall</a></td>
+						<tr th:each="entry : ${entries}">
+							<td th:text="${entry.bundleId}"></td>
+							<td th:text="${entry.key}"></td>
+							<td th:text="${entry.installed}"></td>
+							<td th:text="${entry.forceStart}"></td>
+							<td><a th:href="@{/start(id=${entry.bundleId})}">Start</a></td>
+							<td><a th:href="@{/stop(id=${entry.bundleId})}">Stop</a></td>
+							<td><a th:href="@{/uninstall(id=${entry.bundleId})}">Uninstall</a></td>
 						</tr>
 					</tbody>
 				</table>
