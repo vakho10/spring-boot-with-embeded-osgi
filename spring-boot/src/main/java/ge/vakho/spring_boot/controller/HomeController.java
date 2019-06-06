@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.jar.Attributes;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
-import java.util.stream.Collectors;
 
 import org.apache.tika.Tika;
 import org.osgi.framework.Bundle;
@@ -33,69 +32,69 @@ public class HomeController {
 	@GetMapping
 	public String index(Model model) {
 		model.addAttribute("entries",
-				bundleService.getAll().parallelStream().collect(Collectors.toList()));
+				bundleService.getAll());
 		return "index";
 	}
 
-//	@GetMapping("/start")
-//	public String startBundle(@RequestParam long id) throws BundleNotFoundException, BundleException {
-//		bundleService.start(id);
-//		return "redirect:/";
-//	}
-//
-//	@GetMapping("/stop")
-//	public String stopBundle(@RequestParam long id) throws BundleNotFoundException, BundleException {
-//		bundleService.stop(id);
-//		return "redirect:/";
-//	}
-//
-//	@GetMapping("/uninstall")
-//	public String uninstallBundle(@RequestParam long id) throws BundleNotFoundException, BundleException {
-//		bundleService.uninstall(id);
-//		return "redirect:/";
-//	}
-//
-//	@PostMapping
-//	public String installBundle(@RequestParam MultipartFile file, RedirectAttributes ra) {
-//
-//		do {
-//			if (file.isEmpty()) {
-//				ra.addFlashAttribute("errorMessage", "No file selected! Please select a file.");
-//				break;
-//			}
-//
-//			if (!new Tika().detect(file.getOriginalFilename()).equals("application/java-archive")) {
-//				ra.addFlashAttribute("errorMessage", "Not a JAR file!");
-//				break;
-//			}
-//
-//			// Check if JAR is a bundle (should at least have 'Bundle-SymbolicName' present
-//			// in MANIFEST.MF file)
-//			try (ByteArrayInputStream bais = new ByteArrayInputStream(file.getBytes());
-//					JarInputStream jarStream = new JarInputStream(bais)) {
-//
-//				Manifest mf = jarStream.getManifest();
-//				if (mf == null) {
-//					ra.addFlashAttribute("errorMessage", "No MANIFEST.MF file present in JAR!");
-//					break;
-//				}
-//
-//				Attributes mainAttribs = mf.getMainAttributes();
-//				String bundleSymbolicName = mainAttribs.getValue("Bundle-SymbolicName");
-//				if (bundleSymbolicName == null) {
-//					ra.addFlashAttribute("errorMessage", "Not an OSGI bundle!");
-//					break;
-//				}
-//
-//				Bundle installedBundle = bundleService.install(file);
-//				ra.addFlashAttribute("successMessage",
-//						"Successfully installed bundle: " + installedBundle.getSymbolicName());
-//
-//			} catch (IOException | BundleException e) {
-//				ra.addFlashAttribute("errorMessage", e.getMessage());
-//			}
-//		} while (false);
-//
-//		return "redirect:/";
-//	}
+	@GetMapping("/start")
+	public String startBundle(@RequestParam long id) throws BundleNotFoundException, BundleException {
+		bundleService.start(id);
+		return "redirect:/";
+	}
+
+	@GetMapping("/stop")
+	public String stopBundle(@RequestParam long id) throws BundleNotFoundException, BundleException {
+		bundleService.stop(id);
+		return "redirect:/";
+	}
+
+	@GetMapping("/uninstall")
+	public String uninstallBundle(@RequestParam long id) throws BundleNotFoundException, BundleException {
+		bundleService.uninstall(id);
+		return "redirect:/";
+	}
+
+	@PostMapping
+	public String installBundle(@RequestParam MultipartFile file, RedirectAttributes ra) {
+
+		do {
+			if (file.isEmpty()) {
+				ra.addFlashAttribute("errorMessage", "No file selected! Please select a file.");
+				break;
+			}
+
+			if (!new Tika().detect(file.getOriginalFilename()).equals("application/java-archive")) {
+				ra.addFlashAttribute("errorMessage", "Not a JAR file!");
+				break;
+			}
+
+			// Check if JAR is a bundle (should at least have 'Bundle-SymbolicName' present
+			// in MANIFEST.MF file)
+			try (ByteArrayInputStream bais = new ByteArrayInputStream(file.getBytes());
+					JarInputStream jarStream = new JarInputStream(bais)) {
+
+				Manifest mf = jarStream.getManifest();
+				if (mf == null) {
+					ra.addFlashAttribute("errorMessage", "No MANIFEST.MF file present in JAR!");
+					break;
+				}
+
+				Attributes mainAttribs = mf.getMainAttributes();
+				String bundleSymbolicName = mainAttribs.getValue("Bundle-SymbolicName");
+				if (bundleSymbolicName == null) {
+					ra.addFlashAttribute("errorMessage", "Not an OSGI bundle!");
+					break;
+				}
+
+				Bundle installedBundle = bundleService.install(file);
+				ra.addFlashAttribute("successMessage",
+						"Successfully installed bundle: " + installedBundle.getSymbolicName());
+
+			} catch (IOException | BundleException e) {
+				ra.addFlashAttribute("errorMessage", e.getMessage());
+			}
+		} while (false);
+
+		return "redirect:/";
+	}
 }

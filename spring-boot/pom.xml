@@ -86,6 +86,12 @@
 			<artifactId>org.osgi.core</artifactId>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.osgi/org.osgi.service.log -->
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.service.log</artifactId>
+		</dependency>
+
 		<!-- Country Codes -->
 		<dependency>
 			<groupId>com.neovisionaries</groupId>

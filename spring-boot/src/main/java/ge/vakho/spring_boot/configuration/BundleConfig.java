@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -180,6 +181,46 @@ public class BundleConfig {
 	private boolean isEntryInstalled(Entry entry) {
 		return entry.installed;
 	}
+	
+	public void removeEntryBy(long bundleId) {
+		Optional<Entry> result = getEntries(this::isEntryInstalled).parallelStream().filter(i -> i.bundleId == bundleId)
+				.findAny();
+		if (result.isPresent()) {
+			propertiesConfiguration.clearProperty(result.get().key);
+		}
+	}
+	
+	public void setEntry(long bundleId, String fileName) {		
+		propertiesConfiguration.setProperty(addPrefix(fileName), new Object[] {true, false, bundleId});
+	}
+	
+	public Bundle getBundle(long bundleId) {
+		return bundleContext.getBundle(bundleId);
+	}
+	
+	private Entry getEntry(long bundleId) {
+		Optional<Entry> result = getEntries().parallelStream().filter(i->i.bundleId==bundleId).findAny();
+		if (result.isPresent()) {
+			return result.get();
+		}
+		return null;
+	}
+	
+	public void setEntryForceStartTo(long bundleId, boolean forceStart) {
+		Entry entry = getEntry(bundleId);
+		if (entry != null) {
+			propertiesConfiguration.setProperty(entry.key,
+					new Object[] { entry.installed, forceStart, entry.bundleId });
+		}
+	}
+	
+	public String getEntryFileNameBy(long bundleId) {
+		Entry entry = getEntry(bundleId);
+		if (entry != null) {
+			return removePrefix(entry.key);
+		}
+		return null;
+	}
 
 	public <T> Stream<T> getServicesByClass(Class<T> clazz) {
 		Stream<T> serviceStream = null;
@@ -211,10 +252,10 @@ public class BundleConfig {
 		public Entry() {
 		}
 
-		public Entry(String key, boolean forceStart, boolean installed, long bundleId) {
+		public Entry(String key, boolean installed,  boolean forceStart, long bundleId) {
 			this.key = key;
-			this.forceStart = forceStart;
 			this.installed = installed;
+			this.forceStart = forceStart;
 			this.bundleId = bundleId;
 		}
 
@@ -250,4 +291,5 @@ public class BundleConfig {
 			this.bundleId = bundleId;
 		}
 	}
+
 }
